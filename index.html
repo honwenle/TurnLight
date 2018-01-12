@@ -17,6 +17,7 @@
       border: 1px solid #000;
       background-color: #666;
       float: left;
+      transition: background .3s;
     }
     .block.on {
       background-color: #ff0;
@@ -26,28 +27,50 @@
 <body>
   <div id="wrap" class="wrap"></div>
   <script>
+    var ways = [[0, -1], [1, 0], [0, 1], [-1, 0]]
     var list = [
-      [1,0,1,1,0],
-      [1,0,1,1,0],
-      [1,0,1,1,0],
-      [1,0,1,1,0],
-      [1,1,1,1,0]
+      [1,1,0,1,1],
+      [1,0,1,0,1],
+      [0,1,1,1,0],
+      [1,0,1,0,1],
+      [1,1,0,1,1]
     ]
     var wrap = document.getElementById('wrap')
-    for (var i = 0; i < 5; i++) {
-      for (var j = 0; j < 5; j++) {
-        var block = document.createElement('div')
-        block.className = 'block' + (list[i][j] ? ' on' : '')
-        block.id = 'x' + (i*10 + j)
-        block.onclick = turnLight
-        wrap.appendChild(block)
+    init()
+    function init() {
+      for (var i = 0; i < 5; i++) {
+        for (var j = 0; j < 5; j++) {
+          var block = document.createElement('div')
+          block.className = 'block' + (list[i][j] ? ' on' : '')
+          block.id = 'x' + (i*10 + j)
+          block.onclick = turnLight
+          wrap.appendChild(block)
+        }
       }
     }
     function turnLight() {
+      var id = this.id.substr(1)
+      var x = id % 10
+      var y = (id - x) / 10
+      for (i in ways) {
+        var nx = x + ways[i][1],
+            ny = y + ways[i][0]
+        if (nx >= 0 && nx < 5 && ny >= 0 && ny < 5) {
+          var next = document.getElementById('x' + (ny*10 + nx))
+          toggleClass(next)
+        }
+      }
       toggleClass(this)
+      checkLight()
     }
     function toggleClass(obj) {
       obj.className = 'block' + (obj.className.indexOf('on') < 0 ? ' on' : '')
+    }
+    function checkLight() {
+      if (document.querySelectorAll('.on').length == 0) {
+        alert('Win !')
+        location.reload()
+      }
     }
   </script>
 </body>
