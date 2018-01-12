@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>拉灯</title>
+  <style>
+    .wrap {
+      overflow: hidden;
+      width: 250px;
+      border: 1px solid #000;
+    }
+    .block {
+      width: 48px;
+      height: 48px;
+      border: 1px solid #000;
+      background-color: #666;
+      float: left;
+    }
+    .block.on {
+      background-color: #ff0;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap" class="wrap"></div>
+  <script>
+    var list = [
+      [1,0,1,1,0],
+      [1,0,1,1,0],
+      [1,0,1,1,0],
+      [1,0,1,1,0],
+      [1,1,1,1,0]
+    ]
+    var wrap = document.getElementById('wrap')
+    for (var i = 0; i < 5; i++) {
+      for (var j = 0; j < 5; j++) {
+        var block = document.createElement('div')
+        block.className = 'block' + (list[i][j] ? ' on' : '')
+        block.id = 'x' + (i*10 + j)
+        block.onclick = turnLight
+        wrap.appendChild(block)
+      }
+    }
+    function turnLight() {
+      toggleClass(this)
+    }
+    function toggleClass(obj) {
+      obj.className = 'block' + (obj.className.indexOf('on') < 0 ? ' on' : '')
+    }
+  </script>
+</body>
+</html>
